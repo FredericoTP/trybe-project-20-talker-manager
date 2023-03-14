@@ -4,7 +4,8 @@ const { allTalkers,
   randomToken,
   addTalker,
   readTalkerFile,
-  updateTalker } = require('./talker');
+  updateTalker,
+  deleteTalker } = require('./talker');
 const loginValidation = require('./middleware/loginValidation');
 const emailValidation = require('./middleware/emailValidation');
 const passwordValidation = require('./middleware/passwordValidation');
@@ -97,3 +98,11 @@ app.put('/talker/:id',
 
     return res.status(200).json(updatedTalker);
   });
+
+app.delete('/talker/:id', authorizationValidation, async (req, res) => {
+  const { id } = req.params;
+
+  await deleteTalker(Number(id));
+
+  return res.status(204).end();
+});
