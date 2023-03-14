@@ -17,6 +17,7 @@ const talkValidation = require('./middleware/talkValidation');
 const watchedAtValidation = require('./middleware/watchedAtValidation');
 const rateValidation = require('./middleware/rateValidation');
 const rateSearch = require('./middleware/rateSearch');
+const dateSearch = require('./middleware/dateSearch');
 
 const app = express();
 app.use(express.json());
@@ -46,6 +47,7 @@ app.get('/talker', async (_req, res) => {
 app.get('/talker/search',
   authorizationValidation,
   rateSearch,
+  dateSearch,
   async (req, res) => {
     const queryItens = req.query;
 
