@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const crypto = require('crypto');
 
 const talkerPath = path.resolve(__dirname, './talker.json');
 
@@ -24,7 +25,14 @@ async function talkerById(id) {
   return talker;
 }
 
+function randomToken() {
+  const token = crypto.randomBytes(8).toString('hex');
+
+  return token;
+}
+
 module.exports = {
   allTalkers,
   talkerById,
+  randomToken,
 };

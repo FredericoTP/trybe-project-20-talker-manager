@@ -1,5 +1,5 @@
 const express = require('express');
-const { allTalkers, talkerById } = require('./talker');
+const { allTalkers, talkerById, randomToken } = require('./talker');
 
 const app = express();
 app.use(express.json());
@@ -33,4 +33,10 @@ app.get('/talker/:id', async (req, res) => {
   if (!talker) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 
   return res.status(200).json(talker);
+});
+
+app.post('/login', (req, res) => {
+  const token = randomToken();
+
+  return res.status(200).json({ token });
 });
