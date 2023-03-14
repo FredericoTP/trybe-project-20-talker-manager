@@ -1,8 +1,14 @@
 const express = require('express');
-const { allTalkers, talkerById, randomToken } = require('./talker');
+const { allTalkers, talkerById, randomToken, addTalker, readTalkerFile } = require('./talker');
 const loginValidation = require('./middleware/loginValidation');
 const emailValidation = require('./middleware/emailValidation');
 const passwordValidation = require('./middleware/passwordValidation');
+const authorizationValidation = require('./middleware/authorizationValidation');
+const nameValidation = require('./middleware/nameValidation');
+const ageValidation = require('./middleware/ageValidation');
+const talkValidation = require('./middleware/talkValidation');
+const watchedAtValidation = require('./middleware/watchedAtValidation');
+const rateValidation = require('./middleware/rateValidation');
 
 const app = express();
 app.use(express.json());
@@ -46,4 +52,23 @@ app.post('/login',
     const token = randomToken();
 
     return res.status(200).json({ token });
+  });
+
+app.post('/talker',
+  authorizationValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  async (req, res) => {
+    const talker = req.body;
+
+    const file = await readTalkerFile();
+    const lastFile = file[file.length - 1];
+    const newTalker = { id: lastFile.id + 1, ...talker };
+
+    await addTalker(newTalker);
+
+    return res.status(201).json(newTalker);
   });

@@ -14,6 +14,14 @@ async function readTalkerFile() {
   }
 }
 
+async function writeTalkerFile(talker) {
+  try {
+    await fs.writeFile(talkerPath, talker);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 async function allTalkers() {
   const file = await readTalkerFile();
   return file;
@@ -31,8 +39,17 @@ function randomToken() {
   return token;
 }
 
+async function addTalker(talker) {
+  const file = await readTalkerFile();
+
+  file.push(talker);
+  await writeTalkerFile(JSON.stringify(file));
+}
+
 module.exports = {
+  readTalkerFile,
   allTalkers,
   talkerById,
   randomToken,
+  addTalker,
 };
