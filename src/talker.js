@@ -72,7 +72,11 @@ async function deleteTalker(id) {
 async function findTalkerByQuery(query) {
   const file = await readTalkerFile();
 
-  const filteredTalkers = file.filter((item) => item.name.includes(query));
+  console.log(query);
+
+  const filteredTalkers = file.filter((item) => item.name.includes(query.q))
+    .filter((item) => item.talk.rate.toString().includes(query.rate))
+    .filter((item) => item.talk.watchedAt.includes(query.date));
 
   return filteredTalkers;
 }

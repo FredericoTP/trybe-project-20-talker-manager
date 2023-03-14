@@ -16,6 +16,7 @@ const ageValidation = require('./middleware/ageValidation');
 const talkValidation = require('./middleware/talkValidation');
 const watchedAtValidation = require('./middleware/watchedAtValidation');
 const rateValidation = require('./middleware/rateValidation');
+const rateSearch = require('./middleware/rateSearch');
 
 const app = express();
 app.use(express.json());
@@ -42,13 +43,19 @@ app.get('/talker', async (_req, res) => {
   return res.status(200).json(talkers);
 });
 
-app.get('/talker/search', authorizationValidation, async (req, res) => {
-  const { q } = req.query;
+app.get('/talker/search',
+  authorizationValidation,
+  rateSearch,
+  async (req, res) => {
+    const queryItens = req.query;
 
-  const filtered = await findTalkerByQuery(q);
+    const objectQuery = { q: '', rate: '', date: '' };
+    Object.assign(objectQuery, queryItens);
 
-  return res.status(200).json(filtered);
-});
+    const filtered = await findTalkerByQuery(objectQuery);
+
+    return res.status(200).json(filtered);
+  });
 
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
