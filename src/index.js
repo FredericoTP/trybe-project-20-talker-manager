@@ -21,7 +21,7 @@ app.get('/talker', async (req, res) => {
 
   if (!!talkers && talkers.length === 0) {
     return res.status(200).json([]);
-  };
+  }
 
   return res.status(200).json(talkers);
 });
