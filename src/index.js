@@ -1,6 +1,5 @@
-//começando
-
 const express = require('express');
+const { allTalkers } = require('./talker');
 
 const app = express();
 app.use(express.json());
@@ -15,4 +14,14 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker', async (req, res) => {
+  const talkers = await allTalkers();
+
+  if (!!talkers && talkers.length === 0) {
+    return res.status(200).json([]);
+  };
+
+  return res.status(200).json(talkers);
 });
