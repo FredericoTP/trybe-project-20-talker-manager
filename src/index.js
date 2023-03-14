@@ -5,7 +5,8 @@ const { allTalkers,
   addTalker,
   readTalkerFile,
   updateTalker,
-  deleteTalker } = require('./talker');
+  deleteTalker,
+  findTalkerByQuery } = require('./talker');
 const loginValidation = require('./middleware/loginValidation');
 const emailValidation = require('./middleware/emailValidation');
 const passwordValidation = require('./middleware/passwordValidation');
@@ -39,6 +40,14 @@ app.get('/talker', async (_req, res) => {
   }
 
   return res.status(200).json(talkers);
+});
+
+app.get('/talker/search', authorizationValidation, async (req, res) => {
+  const { q } = req.query;
+
+  const filtered = await findTalkerByQuery(q);
+
+  return res.status(200).json(filtered);
 });
 
 app.get('/talker/:id', async (req, res) => {
