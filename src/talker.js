@@ -18,6 +18,13 @@ async function allTalkers() {
   return file;
 }
 
+async function talkerById(id) {
+  const file = await readTalkerFile();
+  const talker = file.find((item) => item.id === id);
+  return talker;
+}
+
 module.exports = {
   allTalkers,
+  talkerById,
 };
