@@ -1,5 +1,8 @@
 const express = require('express');
 const { allTalkers, talkerById, randomToken } = require('./talker');
+const loginValidation = require('./middleware/loginValidation');
+const emailValidation = require('./middleware/emailValidation');
+const passwordValidation = require('./middleware/passwordValidation');
 
 const app = express();
 app.use(express.json());
@@ -35,8 +38,12 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(200).json(talker);
 });
 
-app.post('/login', (req, res) => {
-  const token = randomToken();
+app.post('/login',
+  loginValidation,
+  emailValidation,
+  passwordValidation,
+  (req, res) => {
+    const token = randomToken();
 
-  return res.status(200).json({ token });
-});
+    return res.status(200).json({ token });
+  });
