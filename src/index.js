@@ -6,7 +6,8 @@ const { allTalkers,
   readTalkerFile,
   updateTalker,
   deleteTalker,
-  findTalkerByQuery } = require('./talker');
+  findTalkerByQuery,
+  updateRateTalker } = require('./talker');
 const loginValidation = require('./middleware/loginValidation');
 const emailValidation = require('./middleware/emailValidation');
 const passwordValidation = require('./middleware/passwordValidation');
@@ -18,6 +19,7 @@ const watchedAtValidation = require('./middleware/watchedAtValidation');
 const rateValidation = require('./middleware/rateValidation');
 const rateSearch = require('./middleware/rateSearch');
 const dateSearch = require('./middleware/dateSearch');
+const rateUpdate = require('./middleware/rateUpdate');
 
 const app = express();
 app.use(express.json());
@@ -57,6 +59,22 @@ app.get('/talker/search',
     const filtered = await findTalkerByQuery(objectQuery);
 
     return res.status(200).json(filtered);
+  });
+
+app.patch('/talker/rate/:id',
+  authorizationValidation,
+  rateUpdate,
+  async (req, res) => {
+    const { id } = req.params;
+    const { rate } = req.body;
+
+    const updatedRate = updateRateTalker(rate, Number(id));
+
+    if (!updatedRate) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+
+    return res.status(204).end();
   });
 
 app.get('/talker/:id', async (req, res) => {

@@ -81,6 +81,19 @@ async function findTalkerByQuery(query) {
   return filteredTalkers;
 }
 
+async function updateRateTalker(rate, id) {
+  const file = await readTalkerFile();
+  const findTalker = file.find((item) => item.id === id);
+
+  if (!findTalker) return undefined;
+
+  findTalker.talk.rate = rate;
+
+  await writeTalkerFile(JSON.stringify(file));
+
+  return findTalker;
+}
+
 module.exports = {
   readTalkerFile,
   allTalkers,
@@ -90,4 +103,5 @@ module.exports = {
   updateTalker,
   deleteTalker,
   findTalkerByQuery,
+  updateRateTalker,
 };
