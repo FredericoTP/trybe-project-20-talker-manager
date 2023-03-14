@@ -46,10 +46,27 @@ async function addTalker(talker) {
   await writeTalkerFile(JSON.stringify(file));
 }
 
+async function updateTalker(object, id) {
+  const { name, age, talk } = object;
+  const file = await readTalkerFile();
+  const findTalker = file.find((item) => item.id === id);
+
+  if (!findTalker) return undefined;
+
+  findTalker.name = name;
+  findTalker.age = age;
+  findTalker.talk = talk;
+
+  await writeTalkerFile(JSON.stringify(file));
+
+  return findTalker;
+}
+
 module.exports = {
   readTalkerFile,
   allTalkers,
   talkerById,
   randomToken,
   addTalker,
+  updateTalker,
 };
