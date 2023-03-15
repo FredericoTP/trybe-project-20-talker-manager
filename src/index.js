@@ -1,4 +1,5 @@
 const express = require('express');
+const talkerDB = require('./db/talkerDB');
 const { allTalkers,
   talkerById,
   randomToken,
@@ -44,6 +45,24 @@ app.get('/talker', async (_req, res) => {
   }
 
   return res.status(200).json(talkers);
+});
+
+app.get('/talker/db', async (req, res) => {
+  try {
+    const [result] = await talkerDB.findAll();
+    const newArray = result.map((item) => ({
+      name: item.name,
+      age: item.age,
+      id: item.id,
+      talk: {
+        watchedAt: item.talk_watched_at,
+        rate: item.talk_rate,
+      },
+    }));
+    res.status(200).json(newArray);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.get('/talker/search',
