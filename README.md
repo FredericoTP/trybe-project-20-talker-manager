@@ -58,7 +58,7 @@ No desenvolvimento foram utilizados alguns pacotes do Node como o mysql2 e o Exp
 
 ## 100% :heavy_check_mark:
 
-![Project-Talker-Manager]()
+![Project-Talker-Manager](https://raw.githubusercontent.com/FredericoTP/trybe-project-20-talker-manager/main/images/talkermanager-grade.png)
 
 </details>
 <br />
